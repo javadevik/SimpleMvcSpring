@@ -5,6 +5,7 @@
     <title>List</title>
 </head>
 <body>
+    <span th:text="${message}"></span>
     <h1>People</h1>
     <table>
         <tr>
@@ -21,5 +22,8 @@
             <th><a th:href="@{/people/{id}(id=${person.getId()})}">Show</a></th>
         </tr>
     </table>
+    <br/>
+    <hr/>
+    <a href="/people/new">Add new Person</a>
 </body>
 </html>

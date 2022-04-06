@@ -53,4 +53,41 @@ public class PeopleController {
         }
         return "redirect:/people";
     }
+
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable("id") int id, Model model) {
+        Person personToUpdate;
+        try {
+            personToUpdate = personDao.findById(id);
+            model.addAttribute(personToUpdate);
+        } catch (PersonDaoException e) {
+            model.addAttribute("message", e.getMessage());
+            return "people/list";
+        }
+        return "people/edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String update(@PathVariable("id") int id,
+                         @ModelAttribute("person") Person person,
+                         Model model) {
+        try {
+            personDao.update(id, person);
+        } catch (PersonDaoException e) {
+            model.addAttribute("message", e.getMessage());
+            return "people/edit";
+        }
+        return "redirect:/people";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id, Model model) {
+        try {
+            personDao.delete(id);
+        } catch (PersonDaoException e) {
+            model.addAttribute("message", e.getMessage());
+            return "people/show";
+        }
+        return "redirect:/people";
+    }
 }

@@ -57,11 +57,17 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public void update(int id, Person updatedPerson) throws PersonDaoException {
-        //update person
+        if (!validator.isValid(updatedPerson))
+            throw new PersonDaoException("Wrong input data!", new SQLException());
+        Person personToBeUpdated = findById(id);
+        personToBeUpdated.setName(updatedPerson.getName());
+        personToBeUpdated.setLastName(updatedPerson.getLastName());
+        personToBeUpdated.setEmail(updatedPerson.getEmail());
     }
 
     @Override
     public void delete(int id) throws PersonDaoException {
-        //delete person
+        Person personToDelete = findById(id);
+        people.remove(personToDelete);
     }
 }
