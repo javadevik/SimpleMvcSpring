@@ -48,7 +48,11 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public Person save(Person person) throws PersonDaoException {
-        return null;
+        if (!validator.isValid(person))
+            throw new PersonDaoException("Wrong input data!", new SQLException());
+        person.setId(++COUNT_PEOPLE);
+        people.add(person);
+        return person;
     }
 
     @Override

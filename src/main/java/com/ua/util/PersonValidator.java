@@ -16,7 +16,7 @@ public class PersonValidator {
     }
 
     public boolean isValidEmail(String email) {
-        Pattern pattern = Pattern.compile("[A-Za-z0-9+_.-]+@[a-z](.+)$");
+        Pattern pattern = Pattern.compile("[A-Za-z0-9+_.-]+@[a-z]+.+[a-z]");
         return pattern.matcher(email).matches();
     }
 }
