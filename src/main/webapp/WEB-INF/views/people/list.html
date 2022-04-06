@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+</head>
+<body>
+    <h1>People</h1>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>Name</th>
+            <th>LastName</th>
+            <th>email</th>
+        </tr>
+        <tr th:each="person : ${people}">
+            <th th:text="${person.getId()}"></th>
+            <th th:text="${person.getName()}"></th>
+            <th th:text="${person.getLastName()}"></th>
+            <th th:text="${person.getEmail()}"></th>
+            <th><a th:href="@{/people/{id}(id=${person.getId()})}">Show</a></th>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+    <span th:text="${message}"></span>
+    <h1>Person details</h1>
+    <div>
+        <b>Name: </b><span th:text="${person.getName()}"></span><br/>
+        <b>Last name :</b><span th:text="${person.getLastName()}"></span><br/>
+        <b>Email: </b><span th:text="${person.getEmail()}"></span><br/>
+    </div>
+</body>
+</html>
