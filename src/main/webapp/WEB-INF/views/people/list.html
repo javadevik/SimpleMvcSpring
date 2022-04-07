@@ -5,14 +5,13 @@
     <title>List</title>
 </head>
 <body>
-    <span th:text="${message}"></span>
     <h1>People</h1>
     <table>
         <tr>
-            <th>id</th>
-            <th>Name</th>
-            <th>LastName</th>
-            <th>email</th>
+            <th style="color: darkslategrey">id</th>
+            <th style="color: darkslategrey">Name</th>
+            <th style="color: darkslategrey">LastName</th>
+            <th style="color: darkslategrey">email</th>
         </tr>
         <tr th:each="person : ${people}">
             <th th:text="${person.getId()}"></th>

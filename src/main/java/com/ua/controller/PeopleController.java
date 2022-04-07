@@ -6,7 +6,10 @@ import com.ua.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/people")
@@ -32,6 +35,7 @@ public class PeopleController {
             person = personDao.findById(id);
         } catch (PersonDaoException e) {
             model.addAttribute("message", e.getMessage());
+            return "exceptions";
         }
         model.addAttribute("person", person);
         return "people/show";
@@ -43,14 +47,11 @@ public class PeopleController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute("person") Person person, Model model) {
-        try {
-            personDao.save(person);
-        } catch (PersonDaoException e) {
-            model.addAttribute("message", e.getMessage());
-            model.addAttribute("person", person);
+    public String create(@ModelAttribute("person") @Valid Person person,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
             return "people/new";
-        }
+        personDao.save(person);
         return "redirect:/people";
     }
 
@@ -62,21 +63,18 @@ public class PeopleController {
             model.addAttribute(personToUpdate);
         } catch (PersonDaoException e) {
             model.addAttribute("message", e.getMessage());
-            return "people/list";
+            return "exceptions";
         }
         return "people/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") int id,
-                         @ModelAttribute("person") Person person,
-                         Model model) {
-        try {
-            personDao.update(id, person);
-        } catch (PersonDaoException e) {
-            model.addAttribute("message", e.getMessage());
+                         @ModelAttribute("person") @Valid Person person,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
             return "people/edit";
-        }
+        personDao.update(id, person);
         return "redirect:/people";
     }
 
@@ -86,7 +84,7 @@ public class PeopleController {
             personDao.delete(id);
         } catch (PersonDaoException e) {
             model.addAttribute("message", e.getMessage());
-            return "people/show";
+            return "exceptions";
         }
         return "redirect:/people";
     }

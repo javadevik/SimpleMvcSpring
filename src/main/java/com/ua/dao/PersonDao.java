@@ -24,17 +24,15 @@ public interface PersonDao {
      * Save person to database
      * @param person person should save to database
      * @return person have been saved
-     * @throws PersonDaoException when cannot save person
      */
-    Person save(Person person) throws PersonDaoException;
+    Person save(Person person);
 
     /**
      * Update person
      * @param id person's id should be updated
      * @param updatedPerson person with updated parameters
-     * @throws PersonDaoException when cannot update person
      */
-    void update(int id, Person updatedPerson) throws PersonDaoException;
+    void update(int id, Person updatedPerson);
 
     /**
      * Delete person by id

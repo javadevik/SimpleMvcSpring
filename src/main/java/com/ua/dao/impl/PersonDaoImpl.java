@@ -3,8 +3,6 @@ package com.ua.dao.impl;
 import com.ua.dao.PersonDao;
 import com.ua.dao.PersonDaoException;
 import com.ua.model.Person;
-import com.ua.util.PersonValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
@@ -15,7 +13,6 @@ import java.util.List;
 public class PersonDaoImpl implements PersonDao {
 
     private int COUNT_PEOPLE;
-    private final PersonValidator validator;
     private final List<Person> people;
     {
         people = new ArrayList<>();
@@ -24,11 +21,6 @@ public class PersonDaoImpl implements PersonDao {
         people.add(new Person(++COUNT_PEOPLE, "John", "Johnson", "johnson@gmail.com"));
         people.add(new Person(++COUNT_PEOPLE, "Martin", "Williams", "martin@gmail.com"));
         people.add(new Person(++COUNT_PEOPLE, "Peete", "Jones", "peete@gmail.com"));
-    }
-
-    @Autowired
-    public PersonDaoImpl(PersonValidator validator) {
-        this.validator = validator;
     }
 
     @Override
@@ -47,22 +39,23 @@ public class PersonDaoImpl implements PersonDao {
     }
 
     @Override
-    public Person save(Person person) throws PersonDaoException {
-        if (!validator.isValid(person))
-            throw new PersonDaoException("Wrong input data!", new SQLException());
+    public Person save(Person person) {
         person.setId(++COUNT_PEOPLE);
         people.add(person);
         return person;
     }
 
     @Override
-    public void update(int id, Person updatedPerson) throws PersonDaoException {
-        if (!validator.isValid(updatedPerson))
-            throw new PersonDaoException("Wrong input data!", new SQLException());
-        Person personToBeUpdated = findById(id);
-        personToBeUpdated.setName(updatedPerson.getName());
-        personToBeUpdated.setLastName(updatedPerson.getLastName());
-        personToBeUpdated.setEmail(updatedPerson.getEmail());
+    public void update(int id, Person updatedPerson) {
+        people
+                .stream()
+                .filter(person -> person.getId() == id)
+                .findFirst()
+                .ifPresent(person -> {
+                    person.setName(updatedPerson.getName());
+                    person.setLastName(updatedPerson.getLastName());
+                    person.setEmail(updatedPerson.getEmail());
+                });
     }
 
     @Override
