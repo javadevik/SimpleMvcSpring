@@ -18,21 +18,21 @@ public interface PersonDao {
      * Find all people
      * @return all people from database
      */
-    List<Person> findAll();
+    List<Person> findAll() throws PersonDaoException;
 
     /**
      * Save person to database
      * @param person person should save to database
      * @return person have been saved
      */
-    Person save(Person person);
+    Person save(Person person) throws PersonDaoException;
 
     /**
      * Update person
      * @param id person's id should be updated
      * @param updatedPerson person with updated parameters
      */
-    void update(int id, Person updatedPerson);
+    void update(int id, Person updatedPerson) throws PersonDaoException;
 
     /**
      * Delete person by id

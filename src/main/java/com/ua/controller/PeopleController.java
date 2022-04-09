@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/people")
@@ -24,7 +25,14 @@ public class PeopleController {
 
     @GetMapping
     public String allPeople(Model model) {
-        model.addAttribute("people", personDao.findAll());
+        List<Person> people = null;
+        try {
+            people = personDao.findAll();
+        } catch (PersonDaoException e) {
+            model.addAttribute("message", e.getMessage());
+            return "exceptions";
+        }
+        model.addAttribute("people", people);
         return "people/list";
     }
 
@@ -48,10 +56,15 @@ public class PeopleController {
 
     @PostMapping
     public String create(@ModelAttribute("person") @Valid Person person,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors())
             return "people/new";
-        personDao.save(person);
+        try {
+            personDao.save(person);
+        } catch (PersonDaoException e) {
+            model.addAttribute("message", e.getMessage());
+            return "exceptions";
+        }
         return "redirect:/people";
     }
 
@@ -71,10 +84,15 @@ public class PeopleController {
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") int id,
                          @ModelAttribute("person") @Valid Person person,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors())
             return "people/edit";
-        personDao.update(id, person);
+        try {
+            personDao.update(id, person);
+        } catch (PersonDaoException e) {
+            model.addAttribute("message", e.getMessage());
+            return "exceptions";
+        }
         return "redirect:/people";
     }
 
